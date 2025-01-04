@@ -64,7 +64,7 @@ git clone git@github.com:hg8116/paylog.git
    npm start
    ```
 
-The server will be running on `http://localhost:5000` by default.
+The server will be running on `http://localhost:3000` by default.
 
 ---
 
@@ -101,7 +101,7 @@ The client will be running on `http://localhost:5173` by default.
 
 - **Database connection issues**: Ensure Docker is running and the PostgreSQL container is started correctly.
 - **Prisma errors**: Check that the `DATABASE_URL` in your `.env` file matches the Docker container credentials.
-- **Port conflicts**: Ensure no other services are running on ports `5000` (server) and `5432` (PostgreSQL).
+- **Port conflicts**: Ensure no other services are running on ports `3000` (server) and `5432` (PostgreSQL).
 
 ---
 
