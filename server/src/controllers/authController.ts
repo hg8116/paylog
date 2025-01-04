@@ -38,8 +38,8 @@ export const register = async (req: Request, res: Response) => {
       });
 
       res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-      console.log("user", JSON.stringify(newUser, null, 2));
-      console.log(token);
+      //console.log("user", JSON.stringify(newUser, null, 2));
+      //console.log(token);
 
       return res.status(201).send(newUser);
     } else {

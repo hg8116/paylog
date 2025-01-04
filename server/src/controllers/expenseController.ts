@@ -8,7 +8,7 @@ export const createExpense = async (req: Request, res: Response) => {
     // @ts-ignore
     const user = req.user;
     const userId = user.id;
-    console.log(userId);
+    //console.log(userId);
     const newExpense = await prisma.expense.create({
       data: {
         amount: parseFloat(amount),

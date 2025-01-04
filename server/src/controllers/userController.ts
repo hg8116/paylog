@@ -31,7 +31,7 @@ export const getUser = async (req: Request, res: Response) => {
       return res.status(404).send("User not found");
     }
 
-    console.log(user);
+    //console.log(user);
     return res.status(200).send(user);
   } catch (err) {
     console.log(err);
