@@ -1,6 +1,7 @@
 import logo from '/paylog-logo.png'
 import { Button } from './ui/button'
 import { useState } from 'react'
+import { Link } from 'react-router'
 
 const Navbar = () => {
 
@@ -11,7 +12,9 @@ const Navbar = () => {
       <div className="w-full bg-white flex flex-wrap items-center justify-between border-b-2 py-4 px-5 lg:px-20">
         {/*Mobile login*/}
         < div className='lg:hidden flex flex-row items-center justify-start' >
-          <Button>Login</Button>
+          <Link to='/auth/login'>
+            <Button>Login</Button>
+          </Link>
         </div >
 
         {/*logo*/}
@@ -35,7 +38,9 @@ const Navbar = () => {
         {/*right options*/}
         <div className='hidden lg:flex flex-row items-center justify-end gap-4'>
           <Button variant="ghost">Help</Button>
-          <Button>Login</Button>
+          <Link to='/auth/login'>
+            <Button>Login</Button>
+          </Link>
         </div>
 
         {/* Mobile Menu Button */}
