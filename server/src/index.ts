@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from "express";
+import cors from 'cors';
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
@@ -14,6 +15,12 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend URL
+    credentials: true, // Allow cookies if using sessions
+  })
+);
 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);

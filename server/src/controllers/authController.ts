@@ -10,7 +10,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
-      res.status(400).send("You must provide a name, an email and a password");
+      return res.status(400).send("You must provide a name, an email and a password");
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -20,7 +20,7 @@ export const register = async (req: Request, res: Response) => {
     });
 
     if (existingUser) {
-      res.status(400).send("Email already in use");
+      return res.status(400).send("Email already in use");
     }
 
     const hashedPassword = bcrypt.hashSync(password, 12);
@@ -34,12 +34,10 @@ export const register = async (req: Request, res: Response) => {
 
     if (newUser) {
       let token = jwt.sign({ id: newUser.id }, JWT_SECRET, {
-        expiresIn: 1 * 24 * 60 * 60 * 1000,
+        expiresIn: "1d",
       });
 
-      res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-      //console.log("user", JSON.stringify(newUser, null, 2));
-      //console.log(token);
+      res.cookie("jwt", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 
       return res.status(201).send(newUser);
     } else {
@@ -56,7 +54,7 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).send("Email or password is missing");
+      return res.status(400).send("Email or password is missing");
     }
 
     const user = await prisma.user.findUnique({
@@ -72,12 +70,10 @@ export const login = async (req: Request, res: Response) => {
     const validPass = await bcrypt.compare(password, user?.password || "");
     if (validPass) {
       let token = jwt.sign({ id: user?.id }, JWT_SECRET, {
-        expiresIn: 1 * 24 * 60 * 60 * 1000,
+        expiresIn: "1d",
       });
 
-      res.cookie("jwt", token, { maxAge: 1 * 24 * 60 * 60, httpOnly: true });
-      console.log("user", JSON.stringify(user, null, 2));
-      console.log(token);
+      res.cookie("jwt", token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true });
 
       return res.status(201).send(user);
     } else {
@@ -85,11 +81,12 @@ export const login = async (req: Request, res: Response) => {
     }
   } catch (err) {
     console.log(err);
+    return res.status(500).send("Internal server error")
   }
 };
 
 // Logout user
-export const logout = (_req: Request, res: Response) => {
+export const logout = async (_req: Request, res: Response) => {
   res.cookie("jwt", "", { maxAge: 0, httpOnly: true });
   return res.status(200).send("Successfully logged out");
 };

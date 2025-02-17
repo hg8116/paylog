@@ -7,6 +7,17 @@ const Navbar = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  /* Need to be changed later */
+  const handleLogout = async () => {
+    await fetch("http://localhost:3000/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    })
+
+    console.log("user logged out");
+
+  }
+
   return (
     <div className='fixed top-0 w-full'>
       <div className="w-full bg-white flex flex-wrap items-center justify-between border-b-2 py-4 px-5 lg:px-20">
@@ -18,8 +29,10 @@ const Navbar = () => {
         </div >
 
         {/*logo*/}
-        < div className='hover:cursor-pointer justify-center lg:justify-center' >
-          <img src={logo} width={81} alt="paylog logo" />
+        <div className='hover:cursor-pointer justify-center lg:justify-center'>
+          <Link to='/'>
+            <img src={logo} width={81} alt="paylog logo" />
+          </Link>
         </div >
 
         {/*center options*/}
@@ -41,6 +54,8 @@ const Navbar = () => {
           <Link to='/auth/login'>
             <Button>Login</Button>
           </Link>
+          {/* To be changed later */}
+          <Button onClick={handleLogout}>Logout</Button>
         </div>
 
         {/* Mobile Menu Button */}
