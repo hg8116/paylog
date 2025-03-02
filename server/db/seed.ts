@@ -3,6 +3,13 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
+
+  const existingUsers = await prisma.user.findMany()
+  if(existingUsers.length > 0){
+    console.log("Database already seeded. Skipping...")
+    return;
+  }
+
   const raman = await prisma.user.upsert({
     where: { email: "raman@gmail.com" },
     update: {},
