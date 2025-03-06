@@ -8,81 +8,86 @@ const Sidebar = () => {
   const [showGroups, setShowGroups] = useState(true)
 
   return (
-    <div className='flex flex-col bg-blue-100 w-1/5 gap-5 px-4 py-4'>
+    <div className="flex flex-col bg-blue-100 w-1/5 gap-6 px-5 py-6 min-h-screen">
       {/* User info & settings */}
-      <div>
-        <div className='flex justify-between items-center gap-20'>
-          <div className='flex justify-center items-center gap-2'>
-            <img src={Person} alt="user-icon" height={50} width={50} />
-            <span className='font-bold text-xl'>Rahul Dalal</span>
-          </div>
-          <SettingsIcon />
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-3">
+          <img src={Person} alt="user-icon" className="h-12 w-12 rounded-full" />
+          <span className="font-bold text-xl">Rahul Dalal</span>
         </div>
+        <SettingsIcon className="cursor-pointer hover:text-blue-700" />
       </div>
 
-      {/* Profiles */}
-      <div className='flex flex-col'>
-        <div className='flex justify-between text-l font-semibold text-gray-800'>
+      {/* Profiles Section */}
+      <div>
+        <div className="flex justify-between items-center text-lg font-semibold text-gray-800 mb-2">
           <span>PROFILES</span>
-          <CirclePlus />
+          <CirclePlus className="cursor-pointer hover:text-blue-700" />
         </div>
-        <ul className='px-2 py-3'>
-          <li className='flex flex-row gap-2 hover:bg-blue-500 px-2 py-4 hover:rounded-md hover:cursor-pointer'>
+        <ul className="space-y-2">
+          <li className="flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer transition-colors hover:bg-blue-400 hover:text-white">
             <User />
             <span>Personal</span>
           </li>
         </ul>
       </div>
 
-      {/* Pages */}
+      {/* Pages Section */}
       <div>
-        <div className='flex justify-between text-l font-semibold text-gray-800'>
+        <div className="flex justify-between items-center text-lg font-semibold text-gray-800 mb-2">
           <span>PAGES</span>
-          <CirclePlus />
+          <CirclePlus className="cursor-pointer hover:text-blue-700" />
         </div>
-        <ul className='px-2 py-3'>
-          <li className='flex flex-row gap-2 hover:bg-blue-500 px-2 py-4 hover:rounded-md hover:cursor-pointer'>
+        <ul className="space-y-1">
+          <li className="flex items-center gap-3 px-3 py-3 rounded-md cursor-pointer transition-colors hover:bg-blue-400 hover:text-white">
             <Eye />
             <span>Overview</span>
           </li>
+
+          {/* Friends Dropdown */}
           <li>
-            <div className='flex flex-row justify-between hover:bg-blue-500 px-2 py-4 hover:rounded-md hover:cursor-pointer'
+            <div
+              className="flex justify-between items-center px-3 py-3 rounded-md cursor-pointer transition-colors hover:bg-blue-400 hover:text-white"
               onClick={() => setShowFriends(!showFriends)}
             >
-              <div className='flex flex-row gap-2'>
+              <div className="flex items-center gap-3">
                 <FileUser />
                 <span>Friends</span>
               </div>
               {showFriends ? <ChevronUpCircleIcon /> : <ChevronDownCircleIcon />}
             </div>
-            {showFriends &&
-              <ul className='pl-8'>
-                <li className='hover:cursor-pointer py-1'>Parth</li>
-                <li className='hover:cursor-pointer py-1'>Shubham</li>
-                <li className='hover:cursor-pointer py-1'>Kajal</li>
-                <li className='hover:cursor-pointer py-1'>Naman</li>
-                <li className='hover:cursor-pointer py-1'>Salman</li>
-                <li className='hover:cursor-pointer py-1'>Shobhit</li>
-                <li className='hover:cursor-pointer py-1'>Jackson</li>
-              </ul>}
+            {showFriends && (
+              <ul className="pl-8 space-y-1">
+                {["Parth", "Shubham", "Kajal", "Naman", "Salman", "Shobhit", "Jackson"].map((friend) => (
+                  <li key={friend} className="py-2 cursor-pointer hover:text-blue-700">
+                    {friend}
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
+
+          {/* Groups Dropdown */}
           <li>
-            <div className='flex flex-row justify-between gap-2 hover:bg-blue-500 px-2 py-4 hover:rounded-md hover:cursor-pointer'
+            <div
+              className="flex justify-between items-center px-3 py-3 rounded-md cursor-pointer transition-colors hover:bg-blue-400 hover:text-white"
               onClick={() => setShowGroups(!showGroups)}
             >
-              <div className='flex flex-row gap-2'>
+              <div className="flex items-center gap-3">
                 <PartyPopper />
                 <span>Groups</span>
               </div>
               {showGroups ? <ChevronUpCircleIcon /> : <ChevronDownCircleIcon />}
             </div>
-            {showGroups &&
-              <ul className='pl-8'>
-                <li className='hover:cursor-pointer py-1'>Pahad Chalo</li>
-                <li className='hover:cursor-pointer py-1'>Roadtrip Goa</li>
-                <li className='hover:cursor-pointer py-1'>Gurgaon Gang</li>
-                <li className='hover:cursor-pointer py-1'>Office Office</li>
-              </ul>}
+            {showGroups && (
+              <ul className="pl-8 space-y-1">
+                {["Pahad Chalo", "Roadtrip Goa", "Gurgaon Gang", "Office Office"].map((group) => (
+                  <li key={group} className="py-2 cursor-pointer hover:text-blue-700">
+                    {group}
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         </ul>
       </div>
