@@ -14,13 +14,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await fetch("http://localhost:300/test-auth", {
+        const response = await fetch("http://localhost:3000/test-auth", {
           method: "GET",
           credentials: "include"
         })
 
-        console.log("set is authenticated: ", response.ok)
-        setIsAuthenticated(response.ok)
+        if (response.ok) {
+          setIsAuthenticated(true)
+        }
+        else {
+          setIsAuthenticated(false)
+        }
       }
       catch (err) {
         console.error("Auth check failed: ", err)

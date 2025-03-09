@@ -4,10 +4,10 @@ import { Link, Navigate, useNavigate } from "react-router"
 
 import Hide from "/hide.png"
 import View from "/view.png"
-import useAuthCheck from "@/hooks/useAuthCheck"
+import { useAuth } from '@/context/authProvider'
 
 const Login = () => {
-  const isAuthenticated = useAuthCheck()
+  const { isAuthenticated, setIsAuthenticated } = useAuth()
   const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
@@ -34,6 +34,7 @@ const Login = () => {
       }
 
       const data = await response.json()
+      setIsAuthenticated(true)
       console.log("Login success: ", data)
 
       navigate('/dashboard/overview')

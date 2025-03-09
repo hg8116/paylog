@@ -1,6 +1,6 @@
 import logo from '/paylog-logo.png'
 import { Button } from './ui/button'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { useAuth } from '@/context/authProvider'
 
@@ -10,11 +10,6 @@ const Navbar = () => {
 
   const { isAuthenticated, setIsAuthenticated } = useAuth()
 
-
-  useEffect(() => {
-    console.log("Auth state change: ", isAuthenticated)
-  }, [isAuthenticated])
-
   /* Need to be changed later */
   const handleLogout = async () => {
     await fetch("http://localhost:3000/auth/logout", {
@@ -22,10 +17,9 @@ const Navbar = () => {
       credentials: "include",
     })
 
-    alert("user looged out!")
+    alert("user logged out!")
     console.log("user logged out");
     setIsAuthenticated(false)
-    console.log("is authen after logout: ", isAuthenticated)
   }
 
   return (
@@ -58,7 +52,6 @@ const Navbar = () => {
           </Button>
         </div >
 
-        <Button onClick={handleLogout}>Logout</Button>
         {/*right options*/}
         <div className='hidden lg:flex flex-row items-center justify-end gap-4'>
           <Button variant="ghost">Help</Button>
