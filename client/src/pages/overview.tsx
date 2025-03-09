@@ -1,7 +1,17 @@
+import AddExpense from "@/components/addExpense"
+import SettleUp from "@/components/settleUp"
+import { Button } from "@/components/ui/button"
 import { CircleUserRound } from "lucide-react"
-import { Button } from "./ui/button"
+import { useState } from "react"
+import { useNavigate } from "react-router"
 
 const Overview = () => {
+  const navigate = useNavigate()
+
+  const [showAddExpensePopup, setShowAddExpensePopup] = useState(false)
+  const [showSettleUpPopup, setShowSettleUpPopup] = useState(false)
+  const [selectedPerson, setSelectedPerson] = useState<{ name: string; amount: string } | null>(null)
+
   return (
     <div className='flex flex-col p-4 gap-8'>
       <div className='text-5xl font-bold'>Overview</div>
@@ -27,8 +37,22 @@ const Overview = () => {
         </div>
         {/* Add Expense & Settle Up */}
         <div className='flex flex-col gap-2 justify-center'>
-          <Button className='h-12 w-18'>Add Expense</Button>
-          <Button className='h-12 w-18'>Settle Up</Button>
+          <div>
+            <Button className='h-12 w-18'
+              onClick={() => setShowAddExpensePopup(!showAddExpensePopup)}
+            >Add Expense</Button>
+            <AddExpense isOpen={showAddExpensePopup} onClose={() => setShowAddExpensePopup(false)} />
+          </div>
+          <div>
+            <Button className='h-12 w-18'
+              onClick={() => setShowSettleUpPopup(!showSettleUpPopup)}
+            >Settle Up</Button>
+            <SettleUp isOpen={showSettleUpPopup} onClose={() => setShowSettleUpPopup(false)}
+              defaultAmount={selectedPerson?.amount}
+              defaultPaidBy="You"
+              defaultPaidTo={selectedPerson?.name}
+            />
+          </div>
         </div>
       </div>
 
@@ -56,7 +80,9 @@ const Overview = () => {
                     <div className="text-lg font-semibold text-gray-900">{person.name}</div>
                     <div className="text-red-600 text-sm font-medium">You owe {person.amount}</div>
                   </div>
-                  <button className="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600 transition">
+                  <button
+                    onClick={() => { setSelectedPerson(person); setShowSettleUpPopup(true) }}
+                    className="px-3 py-1 text-xs font-medium text-white bg-red-500 rounded-md hover:bg-red-600 transition">
                     Settle
                   </button>
                 </li>
@@ -98,7 +124,9 @@ const Overview = () => {
           {/* Header */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-gray-900">Recent Activity</h2>
-            <button className="text-sm font-medium text-blue-600 hover:underline">View all</button>
+            <button
+              onClick={() => { navigate("/dashboard/pastactivity") }}
+              className="text-sm font-medium text-blue-600 hover:underline">View all</button>
           </div>
 
           {/* Activity List */}
@@ -179,7 +207,7 @@ const Overview = () => {
           </ul>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

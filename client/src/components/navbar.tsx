@@ -1,11 +1,19 @@
 import logo from '/paylog-logo.png'
 import { Button } from './ui/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
+import { useAuth } from '@/context/authProvider'
 
 const Navbar = () => {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const { isAuthenticated, setIsAuthenticated } = useAuth()
+
+
+  useEffect(() => {
+    console.log("Auth state change: ", isAuthenticated)
+  }, [isAuthenticated])
 
   /* Need to be changed later */
   const handleLogout = async () => {
@@ -14,12 +22,14 @@ const Navbar = () => {
       credentials: "include",
     })
 
+    alert("user looged out!")
     console.log("user logged out");
-
+    setIsAuthenticated(false)
+    console.log("is authen after logout: ", isAuthenticated)
   }
 
   return (
-    <div className='fixed top-0 w-full'>
+    <nav className='fixed top-0 w-full'>
       <div className="w-full bg-white flex flex-wrap items-center justify-between border-b-2 py-4 px-5 lg:px-20">
         {/*Mobile login*/}
         < div className='lg:hidden flex flex-row items-center justify-start' >
@@ -48,14 +58,18 @@ const Navbar = () => {
           </Button>
         </div >
 
+        <Button onClick={handleLogout}>Logout</Button>
         {/*right options*/}
         <div className='hidden lg:flex flex-row items-center justify-end gap-4'>
           <Button variant="ghost">Help</Button>
-          <Link to='/auth/login'>
-            <Button>Login</Button>
-          </Link>
           {/* To be changed later */}
-          <Button onClick={handleLogout}>Logout</Button>
+          {isAuthenticated ?
+            <Button onClick={handleLogout}>Logout</Button>
+            :
+            <Link to='/auth/login'>
+              <Button>Login</Button>
+            </Link>
+          }
         </div>
 
         {/* Mobile Menu Button */}
@@ -98,7 +112,7 @@ const Navbar = () => {
           </div>
         </div>
       }
-    </div>
+    </nav>
   )
 }
 

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
-import { Link, Navigate } from "react-router"
+import { Link, Navigate, useNavigate } from "react-router"
 
 import Hide from "/hide.png"
 import View from "/view.png"
@@ -8,6 +8,7 @@ import useAuthCheck from "@/hooks/useAuthCheck"
 
 const Login = () => {
   const isAuthenticated = useAuthCheck()
+  const navigate = useNavigate()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -35,6 +36,7 @@ const Login = () => {
       const data = await response.json()
       console.log("Login success: ", data)
 
+      navigate('/dashboard/overview')
       alert("Login successful!")
     }
     catch (error: any) {
@@ -45,7 +47,7 @@ const Login = () => {
 
   return isAuthenticated
     ?
-    <Navigate to='/test' replace />
+    <Navigate to='/dashboard/overview' replace />
     :
     (
       <div className='h-screen flex items-center justify-center'>
