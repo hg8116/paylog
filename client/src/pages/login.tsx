@@ -14,8 +14,9 @@ const Login = () => {
   const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
 
-  const handleLogin = async () => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
+      e.preventDefault()
       const response = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
         body: JSON.stringify({
@@ -53,7 +54,7 @@ const Login = () => {
     (
       <div className='h-screen flex items-center justify-center'>
         {/* Container */}
-        <div className='flex flex-col justify-center items-start py-16 px-12 gap-10 border-2 border-gray rounded-2xl w-[30rem]'>
+        <form onSubmit={handleLogin} className='flex flex-col justify-center items-start py-16 px-12 gap-10 border-2 border-gray rounded-2xl w-[30rem]'>
           {/* Sign in heading */}
           <div className='text-4xl'>
             Sign in
@@ -98,8 +99,7 @@ const Login = () => {
             </div>
             {/* Submit Button */}
             <Button className='rounded-3xl text-base w-full mt-6 p-6'
-              onClick={handleLogin}
-              type='button'
+              type='submit'
             >
               Log in
             </Button>
@@ -122,7 +122,7 @@ const Login = () => {
               Sign up
             </Link>
           </div>
-        </div>
+        </form>
       </div>
     )
 }

@@ -4,16 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState } from "react";
 
-const Friend = () => {
+const Group = () => {
   const [showAddExpensePopup, setShowAddExpensePopup] = useState(false);
   const [showSettleUpPopup, setShowSettleUpPopup] = useState(false);
 
   return (
     <div className="p-6 space-y-6">
-      {/* Friend's name */}
+      {/* Group's name */}
       <div className='flex flex-col justify-center items-center'>
-        <h1 className="text-4xl font-bold">Rishab</h1>
-        <div className='text-2xl font-bold'>Owes you $587.00</div>
+        <h1 className="text-4xl font-bold">Office Office</h1>
       </div>
 
       {/* Add expense and settle up buttons */}
@@ -73,4 +72,4 @@ const Friend = () => {
   );
 };
 
-export default Friend;
+export default Group;

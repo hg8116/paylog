@@ -10,12 +10,15 @@ import Register from "./pages/register"
 import Authtest from "./pages/authtest"
 import Overview from "./pages/overview"
 import Friend from "./pages/friend"
+import Group from "./pages/group"
 
 
 function Layout() {
   const location = useLocation();
   const showNavbar = ["/", "/auth/login", "/auth/register"].includes(location.pathname);
-  const showSidebar = ["/dashboard/test", "/dashboard/overview", "/dashboard/pastactivity", "/dashboard/friend"].includes(location.pathname);
+  //const showSidebar = ["/dashboard/test", "/dashboard/overview", "/dashboard/pastactivity", "/dashboard/friend", "/dashboard/group"].includes(location.pathname);
+
+  const showSidebar = location.pathname.startsWith("/dashboard")
 
   return (
     <div className="flex">
@@ -33,6 +36,7 @@ function Layout() {
             <Route path="overview" element={<ProtectedRoute><Overview /></ProtectedRoute>} />
             <Route path="pastactivity" element={<ProtectedRoute><PastActivity /></ProtectedRoute>} />
             <Route path="friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
+            <Route path="group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
           </Route>
         </Routes>
       </div>
