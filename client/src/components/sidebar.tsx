@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Person from '/person.png'
 import { ChevronDownCircleIcon, ChevronUpCircleIcon, CirclePlus, Eye, FileUser, PartyPopper, RotateCcw, SettingsIcon, User } from "lucide-react"
 import { Link, useNavigate } from 'react-router'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
 
 const Sidebar = () => {
   const navigate = useNavigate()
@@ -9,17 +10,27 @@ const Sidebar = () => {
   const [showFriends, setShowFriends] = useState(true)
   const [showGroups, setShowGroups] = useState(true)
 
+
   return (
     <div className="flex flex-col bg-blue-100 w-1/5 gap-6 px-5 py-6 min-h-screen">
 
       {/* User info & settings */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <img src={Person} alt="user-icon" className="h-12 w-12 rounded-full" />
-          <span className="font-bold text-xl">Rahul Dalal</span>
-        </div>
-        <SettingsIcon className="cursor-pointer hover:text-blue-700" />
-      </div>
+      <DropdownMenu>
+        <DropdownMenuTrigger className="flex justify-between items-center w-full">
+          <div className="flex items-center gap-3">
+            <img src={Person} alt="user-icon" className="h-12 w-12 rounded-full" />
+            <span className="font-bold text-xl">Rahul Dalal</span>
+          </div>
+          <SettingsIcon className="cursor-pointer hover:text-blue-700" />
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>Your Profile</DropdownMenuItem>
+          <DropdownMenuItem>Create a group</DropdownMenuItem>
+          <DropdownMenuItem>Logout</DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/* Profiles Section */}
       <div>

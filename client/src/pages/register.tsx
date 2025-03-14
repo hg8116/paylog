@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import React, { useState } from "react"
 import { Link, Navigate } from "react-router"
 
 import Hide from "/hide.png"
@@ -8,7 +8,7 @@ import { useAuth } from "@/context/authProvider"
 
 const Register = () => {
 
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, setIsAuthenticated } = useAuth()
 
   const [firstname, setFirstname] = useState('')
   const [lastname, setLastname] = useState('')
@@ -16,8 +16,9 @@ const Register = () => {
   const [password, setPassword] = useState('')
   const [showPass, setShowPass] = useState(false)
 
-  const handleRegister = async () => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
+      e.preventDefault()
       let response = await fetch("http://localhost:3000/auth/register", {
         method: "POST",
         body: JSON.stringify({
@@ -37,6 +38,7 @@ const Register = () => {
       }
 
       const data = await response.json()
+      setIsAuthenticated(true)
       console.log("Register success: ", data)
 
       alert("Register successful!")
@@ -54,7 +56,7 @@ const Register = () => {
       :
       <div className='h-screen flex items-center justify-center'>
         {/* Container */}
-        <div className='flex flex-col justify-center items-start py-16 px-12 gap-10 border-2 border-gray rounded-2xl'>
+        <form onSubmit={handleRegister} className='flex flex-col justify-center items-start py-16 px-12 gap-10 border-2 border-gray rounded-2xl'>
           {/* Sign in heading */}
           <div className='text-4xl'>
             Register
@@ -133,8 +135,7 @@ const Register = () => {
             </div>
             {/* Submit Button */}
             <Button className='rounded-3xl text-base w-full mt-6 p-6'
-              onClick={handleRegister}
-              type='button'
+              type='submit'
             >
               Sign in
             </Button>
@@ -147,7 +148,7 @@ const Register = () => {
               Log in
             </Link>
           </div>
-        </div>
+        </form>
       </div>
   )
 }
