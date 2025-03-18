@@ -25,8 +25,7 @@ export const authenticate = async (
     if (!user) {
       return res.status(401).send("User not found");
     }
-    // @ts-ignore
-    req.user = user;
+    req.user = { id: String(user.id), name: user.name, email: user.email };
     next();
   } catch (err) {
     return res.status(400).send("Invalid token");

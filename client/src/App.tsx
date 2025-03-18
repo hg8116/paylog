@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router"
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from "react-router"
 
 import ProtectedRoute from "./components/protectedRoute"
 import PastActivity from "./components/pastActivity"
@@ -11,20 +11,36 @@ import Authtest from "./pages/authtest"
 import Overview from "./pages/overview"
 import Friend from "./pages/friend"
 import Group from "./pages/group"
+import MyAccount from "./pages/myAccount"
+import { useAuth } from "./context/authProvider"
 
 
 function Layout() {
   const location = useLocation();
-  const showNavbar = ["/", "/auth/login", "/auth/register"].includes(location.pathname);
-  //const showSidebar = ["/dashboard/test", "/dashboard/overview", "/dashboard/pastactivity", "/dashboard/friend", "/dashboard/group"].includes(location.pathname);
+  const { isAuthenticated } = useAuth()
 
-  const showSidebar = location.pathname.startsWith("/dashboard")
+  // Define public routes that don't require authentication
+  const publicRoutes = ["/", "/auth/login", "/auth/register"]
+  const isPublicRoute = publicRoutes.includes(location.pathname)
+  const isDashboardRoute = location.pathname.startsWith("/dashboard")
+
+
+  if(!isAuthenticated && !isPublicRoute) {
+    return <Navigate to="/" replace />
+  }
+
+  // Redirect logic
+  if (isAuthenticated && !isDashboardRoute) {
+    return <Navigate to="/dashboard/overview" replace />
+  }
+
+
 
   return (
     <div className="flex">
-      {showSidebar && <Sidebar />}
+      {isDashboardRoute && <Sidebar />}
       <div className="flex-1">
-        {showNavbar && <Navbar />}
+        {isPublicRoute && <Navbar />}
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="auth">
@@ -37,6 +53,7 @@ function Layout() {
             <Route path="pastactivity" element={<ProtectedRoute><PastActivity /></ProtectedRoute>} />
             <Route path="friend" element={<ProtectedRoute><Friend /></ProtectedRoute>} />
             <Route path="group" element={<ProtectedRoute><Group /></ProtectedRoute>} />
+            <Route path="myaccount" element={<ProtectedRoute><MyAccount /></ProtectedRoute>} />
           </Route>
         </Routes>
       </div>

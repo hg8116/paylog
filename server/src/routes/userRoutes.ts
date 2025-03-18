@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {
   getGroupsForUser,
-  getUser,
+  getMyProfile,
+  //getUser,
   getUsers,
+  //updateMyProfile,
   updateUserName,
   updateUserPassword,
 } from "../controllers/userController";
@@ -17,20 +19,22 @@ import { getExpensesForUser } from "../controllers/expenseController";
 const router = Router();
 
 router.get("/", getUsers);
-router.get("/:id", getUser);
+//router.get("/:id", getUser);
 router.put(
-  "/:id/name",
+  "/me/name",
   authenticate,
   validate(updateUserNameSchema),
   updateUserName,
 );
 router.put(
-  "/:id/password",
+  "/me/password",
   authenticate,
   validate(updateUserPasswordSchema),
   updateUserPassword,
 );
 router.get("/:id/groups", authenticate, getGroupsForUser);
 router.get("/:userId/expenses", authenticate, getExpensesForUser);
+router.get("/me", authenticate, getMyProfile)
+// router.put("/me", authenticate, updateMyProfile)
 
 export default router;

@@ -5,7 +5,6 @@ import { prisma } from "../../db/prisma";
 export const createGroup = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
-    // @ts-ignore
     const user = req.user;
 
     const newGroup = await prisma.group.create({
@@ -13,7 +12,7 @@ export const createGroup = async (req: Request, res: Response) => {
         name,
         members: {
           create: {
-            userId: user.id,
+            userId: parseInt(user!.id),
           },
         },
       },
@@ -200,7 +199,7 @@ export const getGroupBalances = async (req: Request, res: Response) => {
     };
     for (const id in balances) {
       const balance = balances[id];
-      if (parseInt(id) === userId) continue;
+      if (parseInt(id) === parseInt(userId)) continue;
 
       const user = expenses.find((exp) => exp.userId === parseInt(id))?.user;
 

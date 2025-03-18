@@ -12,32 +12,32 @@ export const getUsers = async (_req: Request, res: Response) => {
   }
 };
 
-// Get specific user using id
-export const getUser = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
+// // Get specific user using id
+// export const getUser = async (req: Request, res: Response) => {
+//   try {
+//     const { id } = req.params;
 
-    if (!id) {
-      return res.status(400).send("ID missing");
-    }
+//     if (!id) {
+//       return res.status(400).send("ID missing");
+//     }
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(id),
-      },
-    });
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         id: parseInt(id),
+//       },
+//     });
 
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
+//     if (!user) {
+//       return res.status(404).send("User not found");
+//     }
 
-    //console.log(user);
-    return res.status(200).send(user);
-  } catch (err) {
-    console.log(err);
-    return res.status(500).send("Server error");
-  }
-};
+//     //console.log(user);
+//     return res.status(200).send(user);
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).send("Server error");
+//   }
+// };
 
 // Get specific user using email
 export const getUserByEmail = async (req: Request, res: Response) => {
@@ -64,15 +64,17 @@ export const getUserByEmail = async (req: Request, res: Response) => {
 };
 
 // Update user name using id
-// TODO: Authenticate middleware
 export const updateUserName = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const userId = req.user?.id
+    if (!userId) {
+      return res.status(401).send("Unauthorized")
+    }
     const { name } = req.body;
 
     const updatedUser = await prisma.user.update({
       where: {
-        id: parseInt(id),
+        id: Number(userId),
       },
       data: {
         name,
@@ -87,15 +89,17 @@ export const updateUserName = async (req: Request, res: Response) => {
 };
 
 // Update user password using id
-// TODO: Authenticate middleware
 export const updateUserPassword = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const userId = req.user?.id
+    if (!userId) {
+      return res.status(401).send("Unauthorized")
+    }
     const { oldPassword, newPassword } = req.body;
 
     const user = await prisma.user.findUnique({
       where: {
-        id: parseInt(id),
+        id: Number(userId),
       },
     });
 
@@ -112,7 +116,7 @@ export const updateUserPassword = async (req: Request, res: Response) => {
 
     const updatedUser = await prisma.user.update({
       where: {
-        id: parseInt(id),
+        id: Number(userId),
       },
       data: {
         password: hashedPassword,
@@ -149,3 +153,58 @@ export const getGroupsForUser = async (req: Request, res: Response) => {
     return res.status(500).send("Server error");
   }
 };
+
+
+// Get current user's profile
+export const getMyProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id
+    if (!userId) {
+      return res.status(401).send("Unauthorized")
+    }
+//    console.log(req.user)
+//    console.log("USER ID", userId)
+    const user = await prisma.user.findUnique({
+      where: { id: Number(userId) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+      }
+    })
+
+    if (!user) {
+      return res.status(404).send("User not found")
+    }
+
+    return res.status(200).json(user)
+  }
+  catch (err) {
+    console.log(err)
+    return res.status(500).send("Server error")
+  }
+}
+
+// // Update current user's profile
+// export const updateMyProfile = async (req: Request, res: Response) => {
+//   try {
+//     const userId = req.user?.id
+//     const { name } = req.body
+
+//     if (!userId) {
+//       return res.status(401).send("Unauthorized")
+//     }
+
+//     const updatedUser = await prisma.user.update({
+//       where: { id: parseInt(userId) },
+//       data: { name }
+//     })
+//     return res.status(200).json(updatedUser)
+
+//   }
+//   catch (err) {
+//     console.log(err)
+//     return res.status(500).send("Server error")
+//   }
+// }
+

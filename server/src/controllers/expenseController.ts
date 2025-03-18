@@ -5,15 +5,13 @@ import { prisma } from "../../db/prisma";
 export const createExpense = async (req: Request, res: Response) => {
   try {
     const { amount, groupId, splits } = req.body;
-    // @ts-ignore
-    const user = req.user;
-    const userId = user.id;
+    const userId = req.user?.id;
     //console.log(userId);
     const newExpense = await prisma.expense.create({
       data: {
         amount: parseFloat(amount),
         groupId: parseInt(groupId),
-        userId: parseInt(userId),
+        userId: parseInt(userId!),
         splits: {
           create: splits.map((split: any) => ({
             userId: parseInt(split.userId),

@@ -28,11 +28,11 @@ app.use("/groups", groupRoutes);
 app.use("/expense", expenseRoutes);
 
 app.get("/", (_req: Request, res: Response) => {
-  res.send("Expense Tracker API is running");
+  res.send(`Expense Tracker API is running on port ${port} \n 
+    Time: ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })}`);
 });
 
 app.get("/test-auth", authenticate, (req: Request, res: Response) => {
-  // @ts-ignore
   return res.status(200).json(req.user);
 });
 
